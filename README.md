@@ -1,8 +1,11 @@
 # C5 TEAM 13
 
 ## TEAM MEMBERS
+1. Clarence Ng'ang'a Chomba
+2. Neville Ngothe Iregi
+3. Fadhili Beracah Lumumba
 
-# Project Structure
+## Project Structure
 
 ```
 .
