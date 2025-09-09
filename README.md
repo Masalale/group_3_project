@@ -1,14 +1,12 @@
 # C5 TEAM 3
 
-## TEAM MEMBERS
-1. Clarence Ng'ang'a Chomba
-2. Neville Ngothe Iregi
-3. Fadhili Beracah Lumumba
-
 ## Project Description
-This project processes **MoMo SMS XML data**, cleans & categorizes it, stores it in a relational database(e.g MySQL), and provides a frontend dashboard for visualization and analysis of the data.
+Enterprise Web App for processing Mobile Money (MoMo) SMS transaction data.
 
-The first part of the project is to help practice collaborative development workflows by setting up our team’s shared workspace, defining our system architecture, and organizing tasks using Agile practices.
+## TEAM MEMBERS
+1. Clarence Ng'ang'a Chomba - Backend Developer
+2. Neville Ngothe Iregi - Database/API Developer
+3. Fadhili Beracah Lumumba - Frontend Developer
 
 ## Project Structure
 
@@ -61,3 +59,8 @@ The first part of the project is to help practice collaborative development work
 - **api/**: REST API
 - **scripts/**: Automation scripts
 - **tests/**: Unit tests
+
+## Project Links
+- **System Architecture Diagram:** [View Architecture](https://miro.com/app/board/uXjVJKqaqkQ=/?share_link_id=412469949639)
+- **Scrum Board:** [Project Management Board](https://github.com/users/Masalale/projects/4)
+- **Repository:** [GitHub Repository](https://github.com/Masalale/group_3_project)
