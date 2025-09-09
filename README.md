@@ -1,12 +1,16 @@
-# C5 TEAM 3
+# C5 TEAM 13
+
+## Project Description
+Enterprise Web App for processing Mobile Money (MoMo) SMS transaction data.
++ This project processes MoMo SMS XML data, cleans & categorizes it, stores it in a relational database, and provides a frontend dashboard for visualization and analysis.
 
 ## Project Description
 Enterprise Web App for processing Mobile Money (MoMo) SMS transaction data.
 
 ## TEAM MEMBERS
-1. Clarence Ng'ang'a Chomba - Backend Developer
-2. Neville Ngothe Iregi - Database/API Developer
-3. Fadhili Beracah Lumumba - Frontend Developer
+1. Clarence Ng'ang'a Chomba 
+2. Neville Ngothe Iregi
+3. Fadhili Beracah Lumumba
 
 ## Project Structure
 
