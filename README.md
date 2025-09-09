@@ -62,6 +62,6 @@ Enterprise Web App for processing Mobile Money (MoMo) SMS transaction data.
 - **tests/**: Unit tests
 
 ## Project Links
-- **System Architecture Diagram:** [View Architecture](https://miro.com/app/board/uXjVJKqaqkQ=/?share_link_id=412469949639)
+- **High Level System Architecture:** [View Architecture](https://miro.com/app/board/uXjVJKqaqkQ=/?share_link_id=412469949639)
 - **Scrum Board:** [Project Management Board](https://github.com/users/Masalale/projects/4)
-- **Repository:** [GitHub Repository](https://github.com/Masalale/group_3_project)
+  
