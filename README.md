@@ -1,9 +1,14 @@
-# C5 TEAM 13
+# C5 TEAM 3
 
 ## TEAM MEMBERS
 1. Clarence Ng'ang'a Chomba
 2. Neville Ngothe Iregi
 3. Fadhili Beracah Lumumba
+
+## Project Description
+This project processes **MoMo SMS XML data**, cleans & categorizes it, stores it in a relational database(e.g MySQL), and provides a frontend dashboard for visualization and analysis of the data.
+
+The first part of the project is to help practice collaborative development workflows by setting up our team’s shared workspace, defining our system architecture, and organizing tasks using Agile practices.
 
 ## Project Structure
 
