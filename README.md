@@ -53,6 +53,74 @@ Enterprise Web App for processing Mobile Money (MoMo) SMS transaction data.
     └── test_categorize.py
 ```
 
+## Database Design
+**Design rationale and justification**  
+
+Using the [MoMo sms XML data structure](data/raw/momo.xml), we designed an Entity-Relationship Diagram(ERD) for our MoMo SMS data processing system, which needs to handle various types of mobile money transactions. We created the database schema to meet business requirements and provide a model that can efficiently store, query, and analyze transaction data while maintaining data integrity and supporting future scalability.
+
+Hence, we created five entities based on the business requirements: **Users, transactions, system logs, transaction categories, and user transaction stats**. Users could represent one of 2 people; either a sender/receiver, depending on the sms. They could have attributes such as their full name, phone number, and whether the account is a business or an individual. Transactions encompass all financial details from the MoMo's sms data, including the amount transacted, transaction charges, balance, message data(body), and processing timestamps. Transaction categories define the categories that mobile money transactions could fall under, such as deposit, withdrawal, transfer, and airtime. The categories provide for classification and filtering. System Logs track data processing and allow for error tracking within the system.
+
+To resolve the many-to-many relationship between and transaction categories and users, we introduced a **User\_Transaction\_Stats** table. This would help us be flexible in dealing with the data and maintain the relationship between the two entities. The **User\_Transaction\_Stats** entity that combines user activity per category with attributes such as frequency, total amounts, and the last transaction date for dashboard and analysis purposes. Moreover, the model uses primary and foreign keys to ensure accurate references in tables.
+
+The interactions of the entities establish a clean, scalable, and analytic design. It mimics a real data processing system, translating business requirements into a solid database schema and SQL execution.
+
+## Data Dictionary
+
+Our database schema consists of five main tables that store and manage MoMo SMS transaction data:
+
+### USERS
+| Column Name | Data Type | Key | Description |
+| :---------- | :-------- | :-- | :---------- |
+| user_id | INT | Primary Key | Unique identifier for each user |
+| full_name | VARCHAR | | Full legal name of the user |
+| phone_number | VARCHAR | | User's phone number linked to their account |
+| is_business | BOOLEAN | | Indicates whether the account is an individual or business |
+| created_at | TIMESTAMP | | Date and time when the user record was created |
+
+### TRANSACTIONS
+| Column Name | Data Type | Key | Description |
+| :---------- | :-------- | :-- | :---------- |
+| transaction_id | BIGINT | Primary Key | Unique identifier for each transaction |
+| user_id | INT | Foreign Key | References `USERS.user_id` (who made the transaction) |
+| category_id | INT | Foreign Key | References `TRANSACTION_CATEGORIES.category_id` (type of transaction) |
+| sms_date | DATETIME | | Date and time when the transaction SMS was received |
+| message_body | TEXT | | Full text of the SMS message containing transaction details |
+| service_centre | VARCHAR | | Mobile service center that processed the SMS |
+| amount | DECIMAL | | Amount of money transferred/paid |
+| fee | DECIMAL | | Transaction fee charged |
+| new_balance | DECIMAL | | Account balance after the transaction |
+| direction | ENUM | | Indicates transaction flow: `INCOMING` or `OUTGOING` |
+| external_tx_id | VARCHAR | | External transaction reference ID (from mobile money provider) |
+| processed_at | TIMESTAMP | | Date and time when the transaction was processed in the system |
+
+### TRANSACTION_CATEGORIES
+| Column Name | Data Type | Key | Description |
+| :---------- | :-------- | :-- | :---------- |
+| category_id | INT | Primary Key | Unique identifier for each transaction category |
+| category_name | VARCHAR | | Human readable name of transaction category (payment, transfer, etc.) |
+| description | TEXT | | Detailed description of the category |
+
+### SYSTEM_LOGS
+| Column Name | Data Type | Key | Description |
+| :---------- | :-------- | :-- | :---------- |
+| log_id | BIGINT | Primary Key | Unique identifier for each log entry |
+| log_level | ENUM | | Severity of the log (e.g., INFO, WARNING, ERROR) |
+| message | TEXT | | Log message providing details about the event |
+| transaction_id | BIGINT | Foreign Key | References `TRANSACTIONS.transaction_id` (if log relates to a transaction) |
+| processing_stage | VARCHAR | | Stage of processing when the log was created (e.g., ingestion, validation) |
+| created_at | TIMESTAMP | | Date and time when the entry was created |
+
+### USER_TRANSACTION_STATS
+| Column Name | Data Type | Key | Description |
+| :---------- | :-------- | :-- | :---------- |
+| stat_id | INT | Primary Key | Unique identifier for each user transaction statistics record |
+| user_id | INT | Foreign Key | References `USERS.user_id` |
+| category_id | INT | Foreign Key | References `TRANSACTION_CATEGORIES.category_id` |
+| frequency_count | INT | | Total number of transactions by the user in the given category |
+| total_amount | DECIMAL | | Total monetary value of transactions in the category |
+| last_transaction_date | TIMESTAMP | | Timestamp of the most recent transaction in the category |
+
+
 ## Key Folders:
 - **web/**: Frontend files
 - **data/**: Backend files (raw XML, processed JSON, SQLite DB, logs)
