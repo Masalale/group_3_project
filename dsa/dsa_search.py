@@ -1,41 +1,37 @@
+#!/usr/bin/env python3
+""" Search Algorithms for Transaction Data """
 import json
 import time
 
 
-# load parsed json data from file and convert to python object
+# Load parsed json data from file and convert to python object
 with open("../data/parsed_sms.json", "r", encoding="utf-8") as file:
     transactions = json.load(file)
 
 
-# use the transactions with IDs to enable easy search
+# Use the transactions with IDs to enable easy search
 for i, t in enumerate(transactions, start=1):
     t["id"] = i
 
-
-# Build Data Structures to use
-
-# a list of the transactions
+# List of the transactions
 transactions_list = transactions
-# a dictionary of the transactions with an id for each transaction
+# A dictionary of the transactions with an id for each transaction
 transactions_dictionary = {t["id"]: t for t in transactions}
 
 
-# implement linear search function
+# Implementation of linear search function
 def linear_search(transactions_list, spec_id):
     for transaction in transactions_list:
-        # look up specified id and return the particular record
         if transaction["id"] == spec_id:
             return transaction
     return None
 
-# implement dictionary lookup to find transaction by key
-
-
+# Implementation of dictionary lookup to find transaction by key
 def dictionary_lookup(transactions_dictionary, spec_id):
     return transactions_dictionary.get(spec_id, None)
 
 
-# measure efficiency of the search algos using the last transaction
+# Measure efficiency of the search algos using the last transaction
 spec_id = len(transactions)
 
 # Linear search time taken

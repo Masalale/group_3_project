@@ -1,15 +1,17 @@
-# Import required libraries
-# Built-in HTTP server in Python
+#!/usr/bin/env python3
+"""
+RESTful API server to access and manage Mobile Money (MoMo) transactions.
+"""
 from http.server import BaseHTTPRequestHandler, HTTPServer
-import json  # To send/receive data in JSON format
+import json
 import os
 import base64
-from dotenv import load_dotenv  # pip install python-dotenv
+from dotenv import load_dotenv
 
 # Load environment variables
 load_dotenv()
 
-# Get API credentials from environment (or use defaults)
+# Get API credentials from .env file
 API_USER = os.getenv("API_USER")
 API_PASS = os.getenv("API_PASS")
 
@@ -27,29 +29,22 @@ transactions_dic = {}
 for i, t in enumerate(transactions, start=1):
     transactions_dic[i] = t
 
-# --------------------------
-# Request Handler Class
-# --------------------------
 class TransactionHandler(BaseHTTPRequestHandler):
     """
     Handles incoming HTTP requests to access the MoMo transactions.
     Every time a client calls our server, this class decides how to respond.
     """
 
-    # Utility method to set headers for JSON responses
     def _set_headers(self, status=200):
-        # HTTP status code (200 OK, 404 Not Found, etc.)
+        """ Set HTTP headers for the response """
         self.send_response(status)
-        # Tell client we're sending JSON
         self.send_header("Content-Type", "application/json")
-        self.end_headers()  # End headers section
+        self.end_headers()
 
     def check_auth(self):
         """Verify basic authentication credentials"""
-        # Get Authorization header
         auth_header = self.headers.get('Authorization')
         
-        # Check if Authorization header exists and starts with 'Basic '
         if not auth_header or not auth_header.startswith('Basic '):
             self.send_response(401)
             self.send_header('WWW-Authenticate', 'Basic realm="MoMo API"')
@@ -57,7 +52,7 @@ class TransactionHandler(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(json.dumps({
                 "error": "Authentication required",
-                "message": "Please provide valid credentials"
+                "message": "Invalid credentials"
             }).encode())
             return False
         
@@ -72,8 +67,8 @@ class TransactionHandler(BaseHTTPRequestHandler):
                 return True
         except Exception:
             pass
-        
-        # Invalid credentials
+
+        # Send 401 Unauthorized if authentication fails
         self.send_response(401)
         self.send_header('WWW-Authenticate', 'Basic realm="MoMo API"')
         self.send_header('Content-Type', 'application/json')
@@ -84,19 +79,15 @@ class TransactionHandler(BaseHTTPRequestHandler):
         }).encode())
         return False
 
-    # Handle GET requests
     def do_GET(self):
+        """ Handle GET requests to fetch transactions """
         if not self.check_auth():
             return
-        
-        # If the client is asking for /transactions, send the list of transactions
+
         if self.path == "/transactions":
             self._set_headers()
-            # Send list of transactions in JSON format
             self.wfile.write(json.dumps(transactions_dic, indent=4).encode())
-        # If the client is asking for /transactions/<id>, send that specific transaction
         elif self.path.startswith("/transactions/"):
-            # Extract the transaction ID from the URL
             try:
                 transaction_id = int(self.path.split("/")[-1])
                 transaction_record = transactions_dic.get(transaction_id)
@@ -110,16 +101,14 @@ class TransactionHandler(BaseHTTPRequestHandler):
                 self._set_headers(400)
                 self.wfile.write(json.dumps({"error": "Invalid transaction ID"}).encode())
         else:
-            # If the client is asking for something else, respond with 404
             self._set_headers(404)
             self.wfile.write(json.dumps({"error": "Not Found"}).encode())
 
-    # Handle DELETE requests
     def do_DELETE(self):
+        """ Handle DELETE requests to remove transactions """
         if not self.check_auth():
             return
-        
-        # to delete a transaction by id
+
         if self.path.startswith("/transactions/"):
             try:
                 transaction_id = int(self.path.split("/")[-1])
@@ -134,18 +123,17 @@ class TransactionHandler(BaseHTTPRequestHandler):
                 self._set_headers(400)
                 self.wfile.write(json.dumps({"error": "Invalid transaction ID"}).encode())
         else:
-                # If the client is asking to delete something else other than transactions, respond with 404
                 self._set_headers(404)
                 self.wfile.write(json.dumps({"Error": "Not Found the requested resource"}).encode())
 
     def do_POST(self):
+        """ Handle POST requests to add new transactions """
         if not self.check_auth():
             return
-        
-        # to add a new transaction
+
         if self.path == "/transactions":
-            data_length = int(self.headers['Content-Length'])  # Get the size of data
-            post_data = self.rfile.read(data_length).decode("utf-8")  # Read the data
+            data_length = int(self.headers['Content-Length'])
+            post_data = self.rfile.read(data_length).decode("utf-8")
             try:
                 new_transaction = json.loads(post_data)  # Parse JSON data
                 new_id = max(transactions_dic.keys()) + 1 if transactions_dic else 1
@@ -159,25 +147,24 @@ class TransactionHandler(BaseHTTPRequestHandler):
             self._set_headers(404)
             self.wfile.write(json.dumps({"error": "Not Found"}).encode())
 
-    # Handle PUT requests
     def do_PUT(self):
+        """ Handle PUT requests to update existing transactions """
         if not self.check_auth():
             return
-        
-        # to update an existing transaction by id
+
         if self.path.startswith("/transactions/"):
             try:
                 transaction_id = int(self.path.split("/")[-1])
                 if transaction_id in transactions_dic:
-                    data_length = int(self.headers.get('Content-Length', 0))  # Get the size of data
-                    put_data = self.rfile.read(data_length).decode("utf-8")  # Read the data
+                    data_length = int(self.headers.get('Content-Length', 0))
+                    put_data = self.rfile.read(data_length).decode("utf-8")
                     try:
-                        updated_transaction = json.loads(put_data)  # Parse JSON data
-                        transactions_dic[transaction_id] = updated_transaction  # Update dictionary
-                        self._set_headers(200)  # 200 OK
+                        updated_transaction = json.loads(put_data)
+                        transactions_dic[transaction_id] = updated_transaction
+                        self._set_headers(200)
                         self.wfile.write(json.dumps({"message": f"Transaction {transaction_id} updated"}, indent=4).encode())
                     except json.JSONDecodeError:
-                        self._set_headers(400)  # Bad Request
+                        self._set_headers(400)
                         self.wfile.write(json.dumps({"error": "Invalid JSON"}).encode())
                 else:
                     self._set_headers(404)
@@ -188,18 +175,16 @@ class TransactionHandler(BaseHTTPRequestHandler):
         else:
             self._set_headers(404)
             self.wfile.write(json.dumps({"error": "Not Found"}).encode())
-        
-# --------------------------
-# Run the Server
-# --------------------------
+
 def run(port=None):
+    """ Run the HTTP server """
     if port is None:
         port = int(os.getenv("PORT", 8080))
     host = os.getenv("HOST", "")
     
     server = HTTPServer((host, port), TransactionHandler)
     print(f"Server running at http://{host}:{port}")
-    # ... rest of the function
+    # Print API credentials
     print(f"API Credentials: {API_USER} / {API_PASS}")
     print("Available endpoints:")
     print("  GET /transactions       - List all transactions")
@@ -210,10 +195,7 @@ def run(port=None):
     print("Use CTRL+C to stop the server")
     server.serve_forever()  # Keep the server running forever (until stopped)
 
-
-# --------------------------
-# Entry Point
-# --------------------------
+# Main function
 if __name__ == "__main__":
     run()
 

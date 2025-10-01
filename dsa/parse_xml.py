@@ -47,7 +47,6 @@ def extract_basic_info(sms_body: str) -> Dict[str, str]:
         'receiver': receiver
     }
 
-# Parsing function for XML data
 def parse_momo_xml(xml_file_path: str) -> List[Dict[str, Any]]:
     """Parse XML and extract SMS data as JSON objects."""
     with open(xml_file_path, 'r', encoding='utf-8') as file:
@@ -69,6 +68,7 @@ def parse_momo_xml(xml_file_path: str) -> List[Dict[str, Any]]:
 
 
 def main():
+    """ Main function to parse XML and save as JSON """
     xml_file = "../data/raw/momo.xml"
     output_file = "../data/parsed_sms.json"
 
