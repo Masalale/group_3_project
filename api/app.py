@@ -17,7 +17,7 @@ if not API_USER or not API_PASS:
     raise ValueError("API_USER and API_PASS environment variables are required")
 
 # Load parsed transactions from parsed_sms.json
-with open("../parsed_sms.json", "r") as file:
+with open("../data/parsed_sms.json", "r") as file:
     transactions = json.load(file)
 
 # Dictionary to store transactions with id as key
