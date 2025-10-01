@@ -53,6 +53,32 @@ Enterprise Web App for processing Mobile Money (MoMo) SMS transaction data.
     └── test_categorize.py
 ```
 
+## Getting Started
+
+### Prerequisites
+- Python 3.8 or higher
+- pip (Python package manager)
+- Git
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/Masalale/group_3_project.git
+   cd group_3_project
+   ```
+
+2. **Create a virtual environment**
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate
+   ```
+
+3. **Install dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
 ## Database Design
 **Design rationale and justification**  
 
@@ -120,6 +146,17 @@ Our database schema consists of five main tables that store and manage MoMo SMS 
 | total_amount | DECIMAL | | Total monetary value of transactions in the category |
 | last_transaction_date | TIMESTAMP | | Timestamp of the most recent transaction in the category |
 
+## API Endpoints
+
+### Base URL
+```
+http://localhost:5000/api/v1
+```
+
+### Available Endpoints
+- `GET /transactions` - Retrieve all transactions
+- `GET /users/{user_id}/stats` - Get user statistics
+- `GET /categories` - List transaction categories
 
 ## Key Folders:
 - **web/**: Frontend files
