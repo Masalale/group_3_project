@@ -1,4 +1,4 @@
-# C5 TEAM 13
+## C5 TEAM 13
 
 ## Project Description
 Enterprise Web App for processing Mobile Money (MoMo) SMS transaction data.
@@ -22,13 +22,14 @@ Enterprise Web App for processing Mobile Money (MoMo) SMS transaction data.
 │   ├── chart_handler.js
 │   └── assets/
 ├── data/
+|   ├── database
+│   │   └── database_setup.sql
 │   ├── raw/
-│   │   └── momo.xml
-│   ├── processed/
-│   │   └── dashboard.json
+│   │   └── parsed_sms.json
+│   ├── examples
+│   │   └── json_schemas.json
 │   ├── logs/
 │   │   ├── etl.log
-│   │   └── dead_letter/
 │   └── db.sqlite3
 ├── etl/
 │   ├── __init__.py
@@ -39,10 +40,23 @@ Enterprise Web App for processing Mobile Money (MoMo) SMS transaction data.
 │   ├── load_db.py
 │   └── run.py
 ├── api/
-│   ├── __init__.py
+|   ├── .env
+│   ├── venv/
 │   ├── app.py
 │   ├── db.py
-│   └── schemas.py
+│   └── schemas.py                 
+│── dsa/
+|   ├── dsa_search.py
+│   ├── parse_xml.py                
+│── docs/
+│   ├── ERD diagram
+│   ├── api_docs.md
+│── screenshots/
+|   ├── api_testing screenshots/
+│   ├── constraints/
+│   ├── database rules/
+│   ├── query results/
+│── README.md             
 ├── scripts/
 │   ├── run_etl.sh
 │   ├── export_json.sh
@@ -52,32 +66,6 @@ Enterprise Web App for processing Mobile Money (MoMo) SMS transaction data.
     ├── test_clean_normalize.py
     └── test_categorize.py
 ```
-
-## Getting Started
-
-### Prerequisites
-- Python 3.8 or higher
-- pip (Python package manager)
-- Git
-
-### Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/Masalale/group_3_project.git
-   cd group_3_project
-   ```
-
-2. **Create a virtual environment**
-   ```bash
-   python3 -m venv venv
-   source venv/bin/activate
-   ```
-
-3. **Install dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
 
 ## Database Design
 **Design rationale and justification**  
@@ -146,25 +134,98 @@ Our database schema consists of five main tables that store and manage MoMo SMS 
 | total_amount | DECIMAL | | Total monetary value of transactions in the category |
 | last_transaction_date | TIMESTAMP | | Timestamp of the most recent transaction in the category |
 
-## API Endpoints
-
-### Base URL
-```
-http://localhost:5000/api/v1
-```
-
-### Available Endpoints
-- `GET /transactions` - Retrieve all transactions
-- `GET /users/{user_id}/stats` - Get user statistics
-- `GET /categories` - List transaction categories
 
 ## Key Folders:
 - **web/**: Frontend files
 - **data/**: Backend files (raw XML, processed JSON, SQLite DB, logs)
 - **etl/**: Data processing pipeline
-- **api/**: REST API
+- **api/**: REST API implementation
+- **dsa/**: Data parsing and DSA comparison
+- **docs/**: API documentation
 - **scripts/**: Automation scripts
+- **screenshots/**: screenshots of test cases with curl/postman
 - **tests/**: Unit tests
+
+## Setup Instructions
+1. Clone the repository
+```
+git clone https://github.com/<your-username>/group_3_project.git
+cd group_3_project
+```
+
+2. Install Dependencies
+This project uses Python 3.8+ and requires the following packages:
+```
+pip install -r requirements.txt
+```
+
+3. Run Data Parsing & DSA Comparison
+
+Convert XML to JSON and compare search efficiency:
+```
+cd dsa
+python parse_xml
+python dsa_search.py
+```
+
+4. Run the REST API
+```
+cd api
+python app.py
+```
+
+The API will start on:
+```
+http://localhost:8000
+```
+
+### Authentication
+
+All endpoints are protected with Basic Authentication.
+
+Example with curl:
+```
+curl -u admin:password http://localhost:8000/transactions
+```
+
+If invalid credentials are used, you will see:
+```
+401 Unauthorized
+```
+
+## API Endpoints
+**GET /transactions**
+Retrieve all SMS transactions.
+
+**GET /transactions/{id}**
+Retrieve a single transaction by ID.
+
+**POST /transactions**
+Add a new transaction
+
+**PUT /transactions/{id}**
+Update an existing transaction.
+
+**DELETE /transactions/{id}**
+Delete a transaction by ID.
+
+- Full details are in **docs/api_docs.md**
+
+
+## Data Structures & Algorithms
+
+**Linear Search** → Iterates through all transactions in a list.
+
+**Dictionary Lookup** → Uses transaction ID as a key for O(1) access.
+
+
+✅ Testing
+Tested using curl and Postman.
+Screenshots included in the screenshots/ folder of:
+    1. Successful GET with valid credentials
+    2. Unauthorized GET with invalid credentials
+    3. Successful POST, PUT, DELETE
+
 
 ## Architecture Diagram
 ![Architecture Diagram](/architecture_diagram.jpg)
