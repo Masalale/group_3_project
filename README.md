@@ -149,7 +149,7 @@ Our database schema consists of five main tables that store and manage MoMo SMS 
 ## Setup Instructions
 1. Clone the repository
 ```
-git clone https://github.com/<your-username>/group_3_project.git
+git clone https://github.com/masalale/group_3_project.git
 cd group_3_project
 ```
 
@@ -234,3 +234,4 @@ Screenshots included in the screenshots/ folder of:
 - **System Architecture Diagram:** [View Architecture](https://miro.com/app/board/uXjVJKqaqkQ=/?share_link_id=412469949639)
 - **Scrum Board:** [Project Management Board](https://github.com/users/Masalale/projects/4)
 - **Repository:** [GitHub Repository](https://github.com/Masalale/group_3_project)
+
