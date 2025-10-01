@@ -19,15 +19,15 @@ transactions_list = transactions
 transactions_dictionary = {t["id"]: t for t in transactions}
 
 
-# Implementation of linear search function
 def linear_search(transactions_list, spec_id):
+    """ Linear search to find transaction by id """
     for transaction in transactions_list:
         if transaction["id"] == spec_id:
             return transaction
     return None
 
-# Implementation of dictionary lookup to find transaction by key
 def dictionary_lookup(transactions_dictionary, spec_id):
+    """ Dictionary lookup to find transaction by id """
     return transactions_dictionary.get(spec_id, None)
 
 
