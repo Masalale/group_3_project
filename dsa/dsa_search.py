@@ -25,7 +25,7 @@ def linear_search(transactions_list, spec_id):
     for transaction in transactions_list:
         # look up specified id and return the particular record
         if transaction["id"] == spec_id:
-            return t
+            return transaction
     return None
 
 # implement dictionary lookup to find transaction by key
