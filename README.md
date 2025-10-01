@@ -67,6 +67,53 @@ Enterprise Web App for processing Mobile Money (MoMo) SMS transaction data.
     └── test_categorize.py
 ```
 
+## Setup Instructions
+1. Clone the repository
+```
+git clone https://github.com/masalale/group_3_project.git
+cd group_3_project
+```
+
+2. Install Dependencies
+This project uses Python 3.8+ and requires the following packages:
+```
+pip install -r requirements.txt
+```
+
+3. Run Data Parsing & DSA Comparison
+
+Convert XML to JSON and compare search efficiency:
+```
+cd dsa
+python parse_xml
+python dsa_search.py
+```
+
+4. Run the REST API
+```
+cd api
+python app.py
+```
+
+The API will start on:
+```
+http://localhost:8000
+```
+
+### Authentication
+
+All endpoints are protected with Basic Authentication.
+
+Example with curl:
+```
+curl -u admin:password http://localhost:8000/transactions
+```
+
+If invalid credentials are used, you will see:
+```
+401 Unauthorized
+```
+
 ## Database Design
 **Design rationale and justification**  
 
@@ -146,53 +193,6 @@ Our database schema consists of five main tables that store and manage MoMo SMS 
 - **screenshots/**: screenshots of test cases with curl/postman
 - **tests/**: Unit tests
 
-## Setup Instructions
-1. Clone the repository
-```
-git clone https://github.com/masalale/group_3_project.git
-cd group_3_project
-```
-
-2. Install Dependencies
-This project uses Python 3.8+ and requires the following packages:
-```
-pip install -r requirements.txt
-```
-
-3. Run Data Parsing & DSA Comparison
-
-Convert XML to JSON and compare search efficiency:
-```
-cd dsa
-python parse_xml
-python dsa_search.py
-```
-
-4. Run the REST API
-```
-cd api
-python app.py
-```
-
-The API will start on:
-```
-http://localhost:8000
-```
-
-### Authentication
-
-All endpoints are protected with Basic Authentication.
-
-Example with curl:
-```
-curl -u admin:password http://localhost:8000/transactions
-```
-
-If invalid credentials are used, you will see:
-```
-401 Unauthorized
-```
-
 ## API Endpoints
 **GET /transactions**
 Retrieve all SMS transactions.
@@ -234,4 +234,5 @@ Screenshots included in the screenshots/ folder of:
 - **System Architecture Diagram:** [View Architecture](https://miro.com/app/board/uXjVJKqaqkQ=/?share_link_id=412469949639)
 - **Scrum Board:** [Project Management Board](https://github.com/users/Masalale/projects/4)
 - **Repository:** [GitHub Repository](https://github.com/Masalale/group_3_project)
+
 
